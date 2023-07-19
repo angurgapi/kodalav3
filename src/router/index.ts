@@ -1,4 +1,13 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuardNext,
+  type RouteLocationNormalized,
+} from "vue-router";
+
+import requireAuth from "@/router/middleware/requireAuth";
+import middlewarePipeline from "@/router/middlewarePipeline";
+import { useAuthStore } from "@/stores/authStore";
 import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
@@ -23,8 +32,38 @@ const router = createRouter({
       path: "/profile",
       name: "Profile",
       component: () => import("../views/ProfilePage.vue"),
+      meta: {
+        middleware: [requireAuth],
+      },
     },
   ],
 });
+
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ) => {
+    const authStore = useAuthStore();
+
+    if (!to.meta.middleware) {
+      return next();
+    }
+    const middleware = to.meta.middleware as any;
+
+    const context = {
+      to,
+      from,
+      next,
+      authStore,
+    };
+
+    return middleware[0]({
+      ...context,
+      next: middlewarePipeline(context, middleware, 1),
+    });
+  }
+);
 
 export default router;

@@ -2,8 +2,6 @@ export interface IUser {
   name: string;
   email: string;
   role: string;
-  // photo: string;
-  // _id: string;
   id: string;
   completedLessons: string[];
   // created_at: string;

@@ -7,8 +7,9 @@
     <nav class="flex justify-end p-2 items-center">
       <LocaleSwitcher />
 
-      <RouterLink class="ml-2" to="/about"> about </RouterLink>
-      <span v-if="user" class="ml-2">{{ user.displayName }}</span>
+      <RouterLink v-if="user" class="mx-2" to="/profile">
+        {{ user.name }}
+      </RouterLink>
       <RouterLink v-else class="mx-2" to="/auth">
         {{ $t("Navbar.signIn") }}
       </RouterLink>
@@ -24,32 +25,8 @@ import { logoutUser } from "@/api/authApi";
 import { useMutation } from "vue-query";
 import { useAuthStore } from "@/stores/authStore";
 
-const authStore = useAuthStore();
-
-const user = authStore.authUser;
-
-const { mutate: logoutUser } = useMutation(() => logoutUser(), {
-  onSuccess: () => {
-    authStore.setAuthUser(null);
-    document.location.href = "/";
-  },
-  onError: (error) => {
-    console.log(error);
-  },
-});
-
-const handleLogout = () => {
-  logoutUser();
-};
-
-// const userStore = useUserStore();
-// const user = userStore.user;
-
-// userStore.setUser({
-//   displayName: "Bob",
-//   email: "bob@blob",
-// });
-// console.log(user);
+const userStore = useAuthStore();
+const user = userStore.authUser;
 </script>
 
 <style lang="scss" scoped>

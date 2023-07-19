@@ -2,10 +2,12 @@ import axios from "axios";
 import { LoginInput } from "../pages/login.page";
 import { RegisterInput } from "../pages/register.page";
 import { GenericResponse, ILoginResponse, IUserResponse, IUser } from "./types";
+import { useCookies } from "@vueuse/integrations/useCookies";
 
 // const BASE_URL = process.env.API_URL;
 const BASE_URL = `/api`;
-console.log(BASE_URL);
+
+const cookies = useCookies(["token"]);
 
 const authApi = axios.create({
   baseURL: BASE_URL,
@@ -42,6 +44,7 @@ export const signUpUser = async (user: RegisterInput) => {
 
 export const loginUser = async (user: LoginInput) => {
   const response = await authApi.post<ILoginResponse>("auth/login", user);
+  cookies.set("token", response.data.token);
   return response.data;
 };
 
@@ -57,7 +60,8 @@ export const logoutUser = async () => {
   return response.data;
 };
 
-export const getMe = async (token: string) => {
+export const getMe = async () => {
+  const token = cookies.get("token");
   const response = await authApi.get<IUser>("user/me", {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -106,7 +106,7 @@ const { handleSubmit, errors, resetForm } = useForm({
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 
-const authResult = useQuery("authUser", () => getMe(cookies.get("token")), {
+const authResult = useQuery("authUser", () => getMe(), {
   enabled: false,
   retry: 1,
   onSuccess: (data) => {
@@ -137,7 +137,7 @@ const { isLoading, mutate } = useMutation(
     },
     onSuccess: ({ token }) => {
       console.log("onsuccess jwt:", token);
-      cookies.set("token", token);
+      // cookies.set("token", token);
       queryClient.refetchQueries("authUser");
       createToast("Successfully logged in", {
         position: "top-right",
