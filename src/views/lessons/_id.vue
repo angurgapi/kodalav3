@@ -153,24 +153,27 @@ export default {
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
-import { useAxios } from "@vueuse/integrations";
+import { useAxios } from "@vueuse/integrations/useAxios";
 
 const route = useRoute();
 const id = route.params.id;
 console.log(id);
 
-const { response, error, isLoading } = useAxios({
-  url: `${import.meta.env.VITE_API_URL}/api/lessons/${id}`,
-  method: "GET",
-});
+// const { response, error, isLoading } = useAxios({
+//   url: `${import.meta.env.VITE_API_URL}/api/lessons/${id}`,
+//   method: "GET",
+// });
+// console.log(process.env.API_URL);
+const { data, isFinished } = useAxios(`${process.env.API_URL}/lesson`);
+console.log("data", data);
 
-const lesson = ref(null);
+// const lesson = ref(null);
 
-onMounted(() => {
-  if (response.value) {
-    lesson.value = response.value.data;
-  }
-});
+// onMounted(() => {
+//   if (response.value) {
+//     lesson.value = response.value.data;
+//   }
+// });
 </script>
 
 <style lang="scss">

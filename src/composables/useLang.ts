@@ -30,8 +30,8 @@ export function useLang() {
   };
 
   const setLocale = (localeIso: string) => {
-    console.log(localeIso);
-    cookies.set("locale", localeIso);
+    // console.log(localeIso);
+    cookies.set("locale", localeIso, { sameSite: "none", secure: true });
     locale.value = localeIso;
   };
 

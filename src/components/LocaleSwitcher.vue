@@ -1,15 +1,19 @@
 <template>
   <div ref="switcher" class="locale-switcher flex flex-col mr-2">
-    <button class="navbar__btn" @click="isMenuOpen = !isMenuOpen">
+    <button class="text-[#4b83a6]" @click="isMenuOpen = !isMenuOpen">
       {{ currentLocale.iso }}
     </button>
     <div
       v-show="isMenuOpen"
-      class="locale-switcher__menu p-2 shadow-md bg-white rounded-sm"
+      class="locale-switcher__menu p-0 shadow-md bg-white rounded-sm"
     >
-      <ul>
-        <li v-for="option in localeOptions" :key="option.iso">
-          <button class="navbar__btn" @click="toggleLocale(option.iso)">
+      <ul class="w-full p-0">
+        <li
+          v-for="option in localeOptions"
+          :key="option.iso"
+          class="w-full px-2 py-1 hover:bg-slate-100"
+        >
+          <button class="navbar__btn w-full" @click="toggleLocale(option.iso)">
             {{ option.iso }}
           </button>
         </li>
@@ -24,8 +28,6 @@ import { useLang } from "../composables/useLang";
 import { onClickOutside } from "@vueuse/core";
 
 const lang = useLang();
-console.log(lang);
-console.log(lang.locale);
 
 const switcher = ref(null);
 const isMenuOpen = ref(false);
