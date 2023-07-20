@@ -106,12 +106,14 @@ const { handleSubmit, errors, resetForm } = useForm({
 const { value: email } = useField("email");
 const { value: password } = useField("password");
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const authResult = useQuery("authUser", () => getMe(), {
   enabled: false,
   retry: 1,
   onSuccess: (data) => {
-    console.log("/me return: ", data);
+    // console.log("/me return: ", data);
     authStore.setAuthUser(data);
+    router.push({ name: "profile" });
   },
 });
 
@@ -136,17 +138,13 @@ const { isLoading, mutate } = useMutation(
       }
     },
     onSuccess: ({ token }) => {
-      console.log("onsuccess jwt:", token);
-      // cookies.set("token", token);
+      // console.log("onsuccess jwt:", token);
       queryClient.refetchQueries("authUser");
-      createToast("Successfully logged in", {
-        position: "top-right",
-      });
+      // createToast("Successfully logged in", {
+      //   position: "top-right",
+      // });
 
       resetForm();
-      // const authUser = Object.assign({}, data.user);
-      // authStore.setAuthUser(authUser);
-      // router.push({ name: "profile" });
     },
   }
 );

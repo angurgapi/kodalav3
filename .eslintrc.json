@@ -17,6 +17,7 @@
         "ignores": ["Loader"]
       }
     ],
-    "vue/html-self-closing": "off"
+    "vue/html-self-closing": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
