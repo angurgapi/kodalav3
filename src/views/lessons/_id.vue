@@ -1,5 +1,10 @@
 <template>
-  <div class="page page--fullwidth lesson pt-10">keeeek {{ id }}</div>
+  <div class="page page--fullwidth lesson pt-10">
+    <Loader v-if="isLoading" />
+    <div v-else>
+      {{ lessonData.title }}
+    </div>
+  </div>
 </template>
 <!-- 
 <script>
@@ -149,31 +154,36 @@ export default {
   }
 }
 </script> -->
-
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useQuery, useQueryClient } from "vue-query";
 import { ref, onMounted } from "vue";
-import { useAxios } from "@vueuse/integrations/useAxios";
+import { getLessonData } from "@/api/lessonApi";
+import { useRoute } from "vue-router";
+import Loader from "@/components/Loader.vue";
 
 const route = useRoute();
-const id = route.params.id;
-console.log(id);
+const orderNum = route.params.id[0];
+const queryClient = useQueryClient();
 
-// const { response, error, isLoading } = useAxios({
-//   url: `${import.meta.env.VITE_API_URL}/api/lessons/${id}`,
-//   method: "GET",
-// });
-// console.log(process.env.API_URL);
-const { data, isFinished } = useAxios(`${process.env.API_URL}/lesson`);
-console.log("data", data);
+const lessonData = ref({}); // Create a ref with an object
+const isLoading = ref(true);
 
-// const lesson = ref(null);
+const lessonQuery = useQuery("getLesson", () => getLessonData(orderNum), {
+  retry: 1,
+  onSuccess: (data) => {
+    console.log("lesson: ", data);
+    isLoading.value = false;
+    lessonData.value = data; // Update lessonData with the fetched data
+  },
+});
 
-// onMounted(() => {
-//   if (response.value) {
-//     lesson.value = response.value.data;
-//   }
-// });
+onMounted(async () => {
+  try {
+    await queryClient.refetchQueries("getLesson");
+  } catch (error) {
+    console.error("Error fetching lesson:", error);
+  }
+});
 </script>
 
 <style lang="scss">

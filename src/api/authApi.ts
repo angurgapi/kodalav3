@@ -1,16 +1,13 @@
 import axios from "axios";
-import { LoginInput } from "../pages/login.page";
-import { RegisterInput } from "../pages/register.page";
+// import { LoginInput } from "../pages/login.page";
+// import { RegisterInput } from "../pages/register.page";
 import { GenericResponse, ILoginResponse, IUserResponse, IUser } from "./types";
 import { useCookies } from "@vueuse/integrations/useCookies";
-
-// const BASE_URL = process.env.API_URL;
-const BASE_URL = `/api`;
 
 const cookies = useCookies(["token"]);
 
 const authApi = axios.create({
-  baseURL: BASE_URL,
+  baseURL: `/api`,
   withCredentials: true,
 });
 
@@ -48,17 +45,12 @@ export const loginUser = async (user: LoginInput) => {
   return response.data;
 };
 
-export const verifyEmail = async (verificationCode: string) => {
-  const response = await authApi.get<GenericResponse>(
-    `auth/verifyemail/${verificationCode}`
-  );
-  return response.data;
-};
-
-export const logoutUser = async () => {
-  const response = await authApi.get<GenericResponse>("auth/logout");
-  return response.data;
-};
+// export const verifyEmail = async (verificationCode: string) => {
+//   const response = await authApi.get<GenericResponse>(
+//     `auth/verifyemail/${verificationCode}`
+//   );
+//   return response.data;
+// };
 
 export const getMe = async () => {
   const token = cookies.get("token");

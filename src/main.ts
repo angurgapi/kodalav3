@@ -16,7 +16,6 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedState);
 
 app.use(i18n);
-// app.use(createPinia());
 app.use(pinia);
 app.use(router);
 app.use(VueQueryPlugin);

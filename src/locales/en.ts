@@ -67,4 +67,7 @@ export default {
     500: "Oops! Something went wrong",
     reload: "Reload page",
   },
+  lesson: {
+    completedLessons: "Lessons completed",
+  },
 };

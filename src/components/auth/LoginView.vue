@@ -51,9 +51,9 @@
             errors.password
           }}</span>
         </div>
-        <div class="text-right">
+        <!-- <div class="text-right">
           <a href="" class="">Forgot Password?</a>
-        </div>
+        </div> -->
         <button class="bg-teal-500 text-white w-full rounded p-2">
           <span v-if="!isLoading">Login</span>
           <Loader v-else />
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Form, useField, useForm } from "vee-validate";
+import { useField, useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as zod from "zod";
 import { useMutation, useQuery, useQueryClient } from "vue-query";
@@ -75,13 +75,11 @@ import { createToast } from "mosha-vue-toastify";
 import router from "@/router";
 import { useAuthStore } from "@/stores/authStore";
 import Loader from "@/components/Loader.vue";
-// import Cookies from "universal-cookie";
-import { useCookies } from "@vueuse/integrations/useCookies";
+
 import Eye from "@/assets/icons/password-show.svg?component";
 import EyeCrossed from "@/assets/icons/password-hide.svg?component";
 
 const authStore = useAuthStore();
-const cookies = useCookies(["token"]);
 
 const passwordVisible = ref(false);
 
@@ -113,7 +111,8 @@ const authResult = useQuery("authUser", () => getMe(), {
   onSuccess: (data) => {
     // console.log("/me return: ", data);
     authStore.setAuthUser(data);
-    router.push({ name: "profile" });
+    console.log("time to push to profile!");
+    router.push("/profile");
   },
 });
 
@@ -137,13 +136,8 @@ const { isLoading, mutate } = useMutation(
         });
       }
     },
-    onSuccess: ({ token }) => {
-      // console.log("onsuccess jwt:", token);
+    onSuccess: () => {
       queryClient.refetchQueries("authUser");
-      // createToast("Successfully logged in", {
-      //   position: "top-right",
-      // });
-
       resetForm();
     },
   }

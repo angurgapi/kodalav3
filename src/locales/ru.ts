@@ -67,4 +67,7 @@ export default {
     500: "Упс! Что-то пошло не так",
     reload: "Перезагрузить",
   },
+  lesson: {
+    completedLessons: "Пройденные уроки",
+  },
 };
