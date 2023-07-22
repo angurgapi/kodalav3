@@ -8,3 +8,11 @@ declare module "*.svg?component" {
   const component: ComponentOptions;
   export default component;
 }
+
+interface ImportMetaEnv {
+  VITE_PEXELS_KEY: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

@@ -160,6 +160,7 @@ import { ref, onMounted } from "vue";
 import { getLessonData } from "@/api/lessonApi";
 import { useRoute } from "vue-router";
 import Loader from "@/components/Loader.vue";
+import { getWordPicture } from "@/api/pexelsApi";
 
 const route = useRoute();
 const orderNum = route.params.id[0];
@@ -173,10 +174,17 @@ const lessonQuery = useQuery("getLesson", () => getLessonData(orderNum), {
   onSuccess: (data) => {
     console.log("lesson: ", data);
     isLoading.value = false;
-    lessonData.value = data; // Update lessonData with the fetched data
+    lessonData.value = data;
+    queryClient.refetchQueries("getPic");
   },
 });
 
+const picQuery = useQuery("getPic", () => getWordPicture("poppy"), {
+  retry: 1,
+  onSuccess: (data) => {
+    console.log(data);
+  },
+});
 onMounted(async () => {
   try {
     await queryClient.refetchQueries("getLesson");
