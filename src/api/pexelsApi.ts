@@ -9,8 +9,8 @@ pexelsApi.defaults.headers.common["Authorization"] = `${
   import.meta.env.VITE_PEXELS_KEY
 }`;
 
-export const getWordPicture = async (word: string) => {
+export const getWordPicture = async (word: string, num: number = 1) => {
   console.log(pexelsKey);
-  const response = await pexelsApi.get(`?query=${word}`);
+  const response = await pexelsApi.get(`?query=${word}&per_page=${num}`);
   return response.data;
 };

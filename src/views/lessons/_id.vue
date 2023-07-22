@@ -3,6 +3,15 @@
     <Loader v-if="isLoading" />
     <div v-else>
       {{ lessonData.title }}
+      <div v-for="letter in lessonData.letters" :key="letter.id" class="letter">
+        <span class="letter__value"
+          >{{ letter.value }} ({{ letter.transliteration }})</span
+        >
+        <div class="letter__details f-row">
+          {{ letter["en"] }}
+        </div>
+      </div>
+      <img v-if="imgSrc" :src="imgSrc" />
     </div>
   </div>
 </template>
@@ -169,6 +178,8 @@ const queryClient = useQueryClient();
 const lessonData = ref({}); // Create a ref with an object
 const isLoading = ref(true);
 
+const imgSrc = ref("");
+
 const lessonQuery = useQuery("getLesson", () => getLessonData(orderNum), {
   retry: 1,
   onSuccess: (data) => {
@@ -183,6 +194,7 @@ const picQuery = useQuery("getPic", () => getWordPicture("poppy"), {
   retry: 1,
   onSuccess: (data) => {
     console.log(data);
+    imgSrc.value = data.photos[0].src.medium || "";
   },
 });
 onMounted(async () => {
