@@ -14,3 +14,8 @@ export const getLessonData = async (orderNum: string) => {
   const response = await lessonApi.get(`lesson/${orderNum}`);
   return response.data;
 };
+
+export const getAllLessons = async () => {
+  const { data } = await lessonApi.get("lesson");
+  return data;
+};
