@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const lessonApi = axios.create({
   // baseURL: "/api",
-  baseURL: "/api",
+  baseURL: apiUrl,
 });
 
 lessonApi.defaults.headers.common["Content-Type"] = "application/json";

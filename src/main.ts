@@ -4,6 +4,7 @@ import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 import i18n from "@/utils/i18n";
 import { VueQueryPlugin } from "vue-query";
 import "mosha-vue-toastify/dist/style.css";
+import "@/plugins/axios";
 
 import App from "./App.vue";
 import router from "@/router";

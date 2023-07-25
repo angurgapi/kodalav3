@@ -8,7 +8,7 @@ const cookies = useCookies(["token"]);
 
 const authApi = axios.create({
   baseURL: `/api`,
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 authApi.defaults.headers.common["Content-Type"] = "application/json";

@@ -11,6 +11,7 @@ declare module "*.svg?component" {
 
 interface ImportMetaEnv {
   VITE_PEXELS_KEY: string;
+  VITE_API_URL: string;
 }
 
 interface ImportMeta {
