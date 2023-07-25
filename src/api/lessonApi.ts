@@ -11,8 +11,8 @@ lessonApi.defaults.headers.common["Content-Type"] = "application/json";
 
 export const getLessonData = async (orderNum: string) => {
   console.log("getLessonData triggered", orderNum);
-
-  const response = await lessonApi.get(`/lesson/${orderNum}`);
+  const requestUrl = `lesson/${orderNum}`;
+  const response = await lessonApi.get(requestUrl);
   return response.data;
 };
 
