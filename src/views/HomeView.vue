@@ -23,16 +23,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="home">
-    hooome page
+  <div class="home flex flex-col">
     <span>{{ $t("Description") }}</span>
-    <div>
+    <div class="lessons">
       <ul v-if="lessonsData.length">
         <li v-for="(lesson, _id) in lessonsData" :key="_id" class="mt-2">
           {{ lesson.title }}
         </li>
       </ul>
-      <span v-else>oops no lessons</span>
+      <span v-else>oops no lessons found</span>
     </div>
   </div>
 </template>
