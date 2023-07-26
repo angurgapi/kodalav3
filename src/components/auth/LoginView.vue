@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import { useField, useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as zod from "zod";
@@ -105,14 +105,19 @@ const { value: email } = useField("email");
 const { value: password } = useField("password");
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const authResult = useQuery("authUser", () => getMe(), {
+const authResult = useQuery("getUser", () => getMe(), {
   enabled: false,
   retry: 1,
   onSuccess: (data) => {
-    // console.log("/me return: ", data);
-    authStore.setAuthUser(data);
+    console.log("/me return: ", data);
+
     console.log("time to push to profile!");
-    router.push("/profile");
+    nextTick(() => {
+      // authStore.setAuthUser(data);
+      authStore.setAuthUser(data);
+      router.push("/profile");
+      console.log("next tick happened");
+    });
   },
 });
 
@@ -137,14 +142,13 @@ const { isLoading, mutate } = useMutation(
       }
     },
     onSuccess: () => {
-      queryClient.refetchQueries("authUser");
+      queryClient.refetchQueries("getUser");
       resetForm();
     },
   }
 );
 
 const onSubmit = handleSubmit((values) => {
-  console.log("submit");
   mutate({
     email: values.email,
     password: values.password,

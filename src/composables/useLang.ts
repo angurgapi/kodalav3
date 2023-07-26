@@ -8,7 +8,7 @@ export interface ILocale {
 }
 
 export function useLang() {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const cookies = useCookies(["locale"]);
 
   const availableLocales: ILocale[] = [
@@ -39,6 +39,7 @@ export function useLang() {
 
   return {
     locale,
+    t,
     availableLocales,
     setLocale,
   };

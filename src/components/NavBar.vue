@@ -16,7 +16,7 @@
           <button @click="isMenuOpen = !isMenuOpen">
             {{ user.name }}
           </button>
-          <NavbarMenu v-show="isMenuOpen" />
+          <NavbarMenu v-show="isMenuOpen" @close="isMenuOpen = false" />
         </div>
       </template>
       <template v-else>
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { RouterLink } from "vue-router";
 import LocaleSwitcher from "@/components/LocaleSwitcher.vue";
 import { useAuthStore } from "@/stores/authStore";
@@ -37,7 +37,7 @@ import NavbarMenu from "./NavbarMenu.vue";
 
 const userStore = useAuthStore();
 const isMenuOpen = ref(false);
-const user = userStore.authUser;
+const user = computed(() => userStore.user);
 </script>
 
 <style lang="scss" scoped>

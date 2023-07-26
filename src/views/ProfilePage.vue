@@ -29,7 +29,7 @@
 import { computed } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
-const user = authStore.authUser;
+const user = authStore.user;
 console.log(user);
 
 const getSortedLessons = computed(() => {

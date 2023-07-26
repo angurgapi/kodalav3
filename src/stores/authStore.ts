@@ -3,24 +3,27 @@ import { defineStore } from "pinia";
 import { useCookies } from "@vueuse/integrations/useCookies";
 
 export type AuthStoreState = {
-  authUser: IUser | null;
+  user: IUser | null;
 };
 
 export const useAuthStore = defineStore({
   id: "authStore",
   state: () =>
     ({
-      authUser: null,
+      user: null,
     } as AuthStoreState),
   getters: {},
   actions: {
-    setAuthUser(user: IUser | null) {
-      this.authUser = user;
+    setAuthUser(payload: IUser | null) {
+      console.log("setting user", payload);
+      this.user = payload;
     },
     logOut() {
       const cookies = useCookies(["token"]);
-      this.authUser = null;
+      console.log("removing user");
+      this.user = null;
       cookies.remove("token");
+      console.log(this.user);
     },
   },
   persist: true,

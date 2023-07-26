@@ -1,4 +1,4 @@
-import { getMe } from "@/api/authApi";
+// import { getMe } from "@/api/authApi";
 import { useAuthStore } from "@/stores/authStore";
 import type { NavigationGuardNext } from "vue-router";
 
@@ -10,8 +10,7 @@ export default async function requireAuth({
   authStore: any;
 }) {
   try {
-    const user = await getMe();
-    authStore.setAuthUser(user);
+    const user = authStore.user;
 
     if (!user) {
       return next({
@@ -19,8 +18,8 @@ export default async function requireAuth({
       });
     }
   } catch (error) {
-    const authStore = useAuthStore();
-    authStore.logOut();
+    // const authStore = useAuthStore();
+    // authStore.logOut();
     document.location.href = "/auth";
   }
 

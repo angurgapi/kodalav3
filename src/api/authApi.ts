@@ -5,9 +5,10 @@ import { GenericResponse, ILoginResponse, IUserResponse, IUser } from "./types";
 import { useCookies } from "@vueuse/integrations/useCookies";
 
 const cookies = useCookies(["token"]);
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const authApi = axios.create({
-  baseURL: `/api`,
+  // baseURL: `/api`,
+  baseURL: apiUrl,
   // withCredentials: true,
 });
 
@@ -41,7 +42,7 @@ export const signUpUser = async (user: RegisterInput) => {
 
 export const loginUser = async (user: LoginInput) => {
   const response = await authApi.post<ILoginResponse>("auth/login", user);
-  cookies.set("token", response.data.token);
+  cookies.set("token", response.data.token, { sameSite: "none", secure: true });
   return response.data;
 };
 
