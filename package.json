@@ -16,6 +16,7 @@
     "mosha-vue-toastify": "^1.0.23",
     "pinia": "^2.0.22",
     "pinia-plugin-persistedstate": "^3.1.0",
+    "swiper": "^10.1.0",
     "universal-cookie": "^4.0.4",
     "vee-validate": "^4.10.6",
     "vue": "^3.2.39",

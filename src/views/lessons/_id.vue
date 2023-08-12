@@ -1,17 +1,40 @@
 <template>
-  <div class="page page--fullwidth lesson pt-10">
+  <div class="page page--fullpage lesson pt-10">
     <Loader v-if="isLoading" />
     <div v-else>
-      {{ lessonData.title }}
-      <div v-for="letter in lessonData.letters" :key="letter.id" class="letter">
-        <span class="letter__value"
-          >{{ letter.value }} ({{ letter.transliteration }})</span
+      <div class="lesson__data card">
+        <h2>{{ lessonData.title }}</h2>
+        <div
+          v-for="letter in lessonData.letters"
+          :key="letter.id"
+          class="letter"
         >
-        <div class="letter__details f-row">
-          {{ letter[locale] }}
+          <span class="letter__value"
+            >{{ letter.value }} ({{ letter.transliteration }})</span
+          >
+          <div class="letter__details f-row">
+            {{ letter[locale] }}
+          </div>
         </div>
       </div>
-      <img v-if="imgSrc" :src="imgSrc" />
+
+      <div v-if="illustratedWords">
+        <Swiper
+          loop
+          :pagination="true"
+          class="swiper-container"
+          :modules="modules"
+        >
+          <SwiperSlide v-for="word in illustratedWords" :key="word.id">
+            <Polaroid
+              :img="word.image_url"
+              :label="word.value"
+              :royalty="word.img_royalty"
+            />
+          </SwiperSlide>
+        </Swiper>
+        <div class="swiper-pagination"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -165,21 +188,27 @@ export default {
 </script> -->
 <script setup lang="ts">
 import { useQuery, useQueryClient } from "vue-query";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
+
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+
 import { getLessonData } from "@/api/lessonApi";
 import { useRoute } from "vue-router";
 import Loader from "@/components/Loader.vue";
-import { getWordPicture } from "@/api/pexelsApi";
+
 import { useLang } from "@/composables/useLang";
+import ILesson from "@/types/lesson";
+import Polaroid from "@/components/elements/Polaroid.vue";
 
 const route = useRoute();
 const orderNum = route.params.id[0];
 const queryClient = useQueryClient();
 const { t, locale } = useLang();
 
-console.log(locale.value);
-
-const lessonData = ref({}); // Create a ref with an object
+const lessonData = ref({});
 const isLoading = ref(true);
 
 const imgSrc = ref("");
@@ -189,18 +218,27 @@ const lessonQuery = useQuery("getLesson", () => getLessonData(orderNum), {
   onSuccess: (data) => {
     console.log("lesson: ", data);
     isLoading.value = false;
-    lessonData.value = data;
-    queryClient.refetchQueries("getPic");
+    lessonData.value = data as ILesson;
+    // queryClient.refetchQueries("getPic");
   },
 });
 
-const picQuery = useQuery("getPic", () => getWordPicture("poppy"), {
-  retry: 1,
-  onSuccess: (data) => {
-    console.log(data);
-    imgSrc.value = data.photos[0].src.medium || "";
+const swiperOptions = {
+  loop: true,
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true, // Optional: Make the pagination bullets clickable
   },
-});
+};
+
+const modules = [Pagination, Navigation];
+// const picQuery = useQuery("getPic", () => getWordPicture("poppy"), {
+//   retry: 1,
+//   onSuccess: (data) => {
+//     console.log(data);
+//     imgSrc.value = data.photos[0].src.medium || "";
+//   },
+// });
 onMounted(async () => {
   try {
     await queryClient.refetchQueries("getLesson");
@@ -208,15 +246,32 @@ onMounted(async () => {
     console.error("Error fetching lesson:", error);
   }
 });
+
+const illustratedWords = computed(() => {
+  return lessonData.value.words.filter((word) => word.image_url);
+});
 </script>
 
 <style lang="scss">
 .page {
-  @media (max-width: 420px) {
-    padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  width: 100%;
+  height: 100%;
+  max-width: 1100px;
+
+  &--fullpage {
+    @media (max-width: 350px) {
+      padding: 10px 0;
+    }
+  }
+
+  @media (max-width: 380px) {
+    padding: 14px;
   }
 }
-
 .swiper-container {
   max-width: 300px;
   @media (max-width: 400px) {
@@ -244,5 +299,8 @@ onMounted(async () => {
 
 // .swiper-pagination-bullets {
 //   bottom: -5px;
+// }
+// .swiper-container {
+//   height: 400px;
 // }
 </style>

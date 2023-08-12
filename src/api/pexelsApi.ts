@@ -10,7 +10,7 @@ pexelsApi.defaults.headers.common["Authorization"] = `${
 }`;
 
 export const getWordPicture = async (word: string, num: number = 1) => {
-  console.log("pexels key:", pexelsKey);
+  // console.log("pexels key:", pexelsKey);
   const response = await pexelsApi.get(`?query=${word}&per_page=${num}`);
   return response.data;
 };

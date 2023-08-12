@@ -9,6 +9,7 @@ import requireAuth from "@/router/middleware/requireAuth";
 import middlewarePipeline from "@/router/middlewarePipeline";
 import { useAuthStore } from "@/stores/authStore";
 import HomeView from "../views/HomeView.vue";
+import LessonPage from "../views/lessons/_id.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,7 +27,7 @@ const router = createRouter({
     {
       path: "/lesson/:id",
       name: "Lesson",
-      component: () => import("../views/lessons/_id.vue"),
+      component: LessonPage,
     },
     {
       path: "/profile",
