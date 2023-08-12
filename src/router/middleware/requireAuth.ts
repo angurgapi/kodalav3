@@ -18,8 +18,9 @@ export default async function requireAuth({
       });
     }
   } catch (error) {
-    // const authStore = useAuthStore();
-    // authStore.logOut();
+    const authStore = useAuthStore();
+    authStore.logOut();
+    console.log(error);
     document.location.href = "/auth";
   }
 

@@ -70,4 +70,7 @@ export default {
   lesson: {
     completedLessons: "Пройденные уроки",
   },
+  Profile: {
+    title: "Личный кабинет",
+  },
 };

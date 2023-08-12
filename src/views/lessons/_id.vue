@@ -8,7 +8,7 @@
           >{{ letter.value }} ({{ letter.transliteration }})</span
         >
         <div class="letter__details f-row">
-          {{ letter["en"] }}
+          {{ letter[locale] }}
         </div>
       </div>
       <img v-if="imgSrc" :src="imgSrc" />
@@ -170,10 +170,14 @@ import { getLessonData } from "@/api/lessonApi";
 import { useRoute } from "vue-router";
 import Loader from "@/components/Loader.vue";
 import { getWordPicture } from "@/api/pexelsApi";
+import { useLang } from "@/composables/useLang";
 
 const route = useRoute();
 const orderNum = route.params.id[0];
 const queryClient = useQueryClient();
+const { t, locale } = useLang();
+
+console.log(locale.value);
 
 const lessonData = ref({}); // Create a ref with an object
 const isLoading = ref(true);

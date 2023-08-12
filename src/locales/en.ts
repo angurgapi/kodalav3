@@ -70,4 +70,8 @@ export default {
   lesson: {
     completedLessons: "Lessons completed",
   },
+
+  Profile: {
+    title: "Your profile",
+  },
 };

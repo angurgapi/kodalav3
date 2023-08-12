@@ -12,12 +12,7 @@
     <nav class="flex justify-end p-2 items-center">
       <LocaleSwitcher />
       <template v-if="user">
-        <div class="relative">
-          <button @click="isMenuOpen = !isMenuOpen">
-            {{ user.name }}
-          </button>
-          <NavbarMenu v-show="isMenuOpen" @close="isMenuOpen = false" />
-        </div>
+        <NavbarMenu :user-name="user.name" />
       </template>
       <template v-else>
         <RouterLink class="mx-2" to="/auth">
@@ -36,7 +31,7 @@ import { useAuthStore } from "@/stores/authStore";
 import NavbarMenu from "./NavbarMenu.vue";
 
 const userStore = useAuthStore();
-const isMenuOpen = ref(false);
+
 const user = computed(() => userStore.user);
 </script>
 

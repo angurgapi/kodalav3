@@ -1,9 +1,10 @@
 <template>
   <div class="page">
-    profile page
+    {{ $t("Profile.title") }}
     <template v-if="user">
       <div class="user-data">
-        <span class="user-data__label">login</span> <span>{{ user.name }}</span>
+        <span class="user-data__label">username</span>
+        <span>{{ user.name }}</span>
         <span class="user-data__label">e-mail</span>
         <span>{{ user.email }}</span>
         <span class="user-data__label">role</span>
@@ -30,7 +31,6 @@ import { computed } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
 const user = authStore.user;
-console.log(user);
 
 const getSortedLessons = computed(() => {
   return user?.completedLessons.toSorted() || [];

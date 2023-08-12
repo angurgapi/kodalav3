@@ -36,6 +36,14 @@ const router = createRouter({
         middleware: [requireAuth],
       },
     },
+    {
+      path: "/cards",
+      name: "Cards",
+      component: () => import("../views/CardsPage.vue"),
+      // meta: {
+      //   middleware: [requireAuth],
+      // },
+    },
   ],
 });
 

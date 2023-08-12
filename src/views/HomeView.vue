@@ -80,12 +80,12 @@
                 >
                 <p class="lesson-link__description">
                   <!-- буквы -->
-                  <!-- <span
-                      v-for="(letter, index) in getLessonLetters(link)"
-                      :key="index"
-                      class="lesson-link__letter"
-                      >{{ letter }}</span
-                    > -->
+                  <span
+                    v-for="(letter, index) in link.letters"
+                    :key="index"
+                    class="lesson-link__letter"
+                    >{{ letter.value }}</span
+                  >
                 </p>
               </RouterLink>
             </li>
@@ -103,11 +103,12 @@ import { ref, onMounted, computed } from "vue";
 import { RouterLink } from "vue-router";
 import ReasonCard from "@/components/homepage/ReasonCard.vue";
 import { useLang } from "@/composables/useLang";
+import ILesson from "@/types/lesson";
 
 const { t } = useLang();
 
 const queryClient = useQueryClient();
-const lessonsData = ref([]);
+const lessonsData = ref<ILesson[]>([]);
 
 const reasons = computed(() => {
   return [
@@ -130,7 +131,7 @@ const lessonsQuery = useQuery("getLessons", () => getAllLessons(), {
   retry: 1,
   onSuccess: (data) => {
     console.log("lessons: ", data);
-    lessonsData.value = data;
+    lessonsData.value = data.sort((a, b) => a.order_num > b.order_num);
   },
 });
 onMounted(async () => {
