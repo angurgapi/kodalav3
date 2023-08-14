@@ -5,7 +5,7 @@
     </button>
     <div
       v-show="isMenuOpen"
-      class="absolute top-30 p-2 rounded bg-white shadow"
+      class="absolute top-30 right-0 p-2 rounded bg-white shadow"
     >
       <ul @click="isMenuOpen = !isMenuOpen">
         <li>

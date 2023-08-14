@@ -8,6 +8,7 @@
 #app {
   font-weight: normal;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 a {

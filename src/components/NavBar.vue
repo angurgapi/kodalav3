@@ -1,5 +1,5 @@
 <template>
-  <header class="header h-[48px] z-100 flex w-full justify-between">
+  <header class="header h-[48px] z-100 flex w-full justify-between px-2">
     <RouterLink to="/">
       <!-- <logo alt="logo" class="logo mx-2" height="32" width="32" /> -->
       <img class="header__logo header__logo" src="/images/logo-pic.svg" />
