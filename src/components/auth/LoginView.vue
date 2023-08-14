@@ -7,7 +7,7 @@
         Welcome Back
       </h1>
       <form
-        class="max-w-[27rem] mx-auto overflow-hidden shadow-lg bg-ct-dark-200 rounded-2xl p-8 space-y-5"
+        class="max-w-[27rem] mx-auto overflow-hidden shadow-lg bg-white rounded-2xl p-8 space-y-5"
         @submit.prevent="onSubmit"
       >
         <div class="">

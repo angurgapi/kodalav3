@@ -7,7 +7,7 @@
         Create an account
       </h1>
       <form
-        class="max-w-[27rem] mx-auto overflow-hidden shadow-lg bg-ct-dark-200 rounded-2xl p-8 space-y-5"
+        class="max-w-[27rem] mx-auto overflow-hidden shadow-lg bg-white rounded-2xl p-8 space-y-5"
         @submit.prevent="onSubmit"
       >
         <div class="">
@@ -18,7 +18,7 @@
           <input
             id="name"
             v-model="name"
-            type="email"
+            type="text"
             placeholder=" "
             class="block w-full rounded-2xl appearance-none focus:outline-none py-2 px-4 bg-slate-50"
           />
@@ -81,8 +81,8 @@ import { useField, useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as zod from "zod";
 import { useMutation, useQuery, useQueryClient } from "vue-query";
-import { getMe, loginUser } from "@/api/authApi";
-import type { ILoginInput } from "@/api/types";
+import { getMe, signUpUser, loginUser } from "@/api/authApi";
+import type { ISignUpInput } from "@/api/types";
 import { createToast } from "mosha-vue-toastify";
 import router from "@/router";
 import { useAuthStore } from "@/stores/authStore";
@@ -121,20 +121,10 @@ const { value: password } = useField("password");
 const { value: name } = useField("name");
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const authResult = useQuery("authUser", () => getMe(), {
-  enabled: false,
-  retry: 1,
-  onSuccess: (data) => {
-    // console.log("/me return: ", data);
-    authStore.setAuthUser(data);
-    router.push({ name: "profile" });
-  },
-});
-
 const queryClient = useQueryClient();
 
 const { isLoading, mutate } = useMutation(
-  (credentials: ILoginInput) => loginUser(credentials),
+  (credentials: ISignUpInput) => signUpUser(credentials),
   {
     onError: (error) => {
       if (Array.isArray((error as any).response.data.error)) {
@@ -151,12 +141,13 @@ const { isLoading, mutate } = useMutation(
         });
       }
     },
-    onSuccess: ({ token }) => {
-      // console.log("onsuccess jwt:", token);
-      queryClient.refetchQueries("authUser");
-      // createToast("Successfully logged in", {
-      //   position: "top-right",
-      // });
+    onSuccess: () => {
+      createToast(
+        "Successfully created new account! Log in with email and password now",
+        {
+          position: "top-right",
+        }
+      );
 
       resetForm();
     },
@@ -168,6 +159,7 @@ const onSubmit = handleSubmit((values) => {
   mutate({
     email: values.email,
     password: values.password,
+    name: values.name,
   });
 });
 

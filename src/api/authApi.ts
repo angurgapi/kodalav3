@@ -1,7 +1,14 @@
 import axios from "axios";
 // import { LoginInput } from "../pages/login.page";
 // import { RegisterInput } from "../pages/register.page";
-import { GenericResponse, ILoginResponse, IUserResponse, IUser } from "./types";
+import {
+  GenericResponse,
+  ILoginResponse,
+  IUserResponse,
+  IUser,
+  ILoginInput,
+  ISignUpInput,
+} from "./types";
 import { useCookies } from "@vueuse/integrations/useCookies";
 
 const cookies = useCookies(["token"]);
@@ -35,12 +42,12 @@ authApi.interceptors.response.use(
   }
 );
 
-export const signUpUser = async (user: RegisterInput) => {
+export const signUpUser = async (user: ISignUpInput) => {
   const response = await authApi.post<GenericResponse>("auth/register", user);
   return response.data;
 };
 
-export const loginUser = async (user: LoginInput) => {
+export const loginUser = async (user: ILoginInput) => {
   const response = await authApi.post<ILoginResponse>("auth/login", user);
   cookies.set("token", response.data.token, { sameSite: "none", secure: true });
   return response.data;
